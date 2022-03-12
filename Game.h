@@ -31,9 +31,9 @@ public:
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
-	SDL_Texture *img_background, *img_player, *img_shot;
+	SDL_Texture *img_background, *img_player, *img_shot, *img_menu;  //Incluido el *img_menu
 
-	Entity Player, Shots[MAX_SHOTS], Scene;
+	Entity Player, Shots[MAX_SHOTS], Scene, Menu;
 	int idx_shot;
 
 	bool god_mode;

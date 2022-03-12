@@ -1,6 +1,8 @@
 #include "Game.h"
 #include <math.h>
 
+bool enter = false;
+
 Game::Game() {}
 Game::~Game(){}
 
@@ -51,6 +53,11 @@ bool Game::LoadImages()
 		SDL_Log("IMG_Init, failed to init required png support: %s\n", IMG_GetError());
 		return false;
 	}
+	img_menu = SDL_CreateTextureFromSurface(Renderer, IMG_Load("menu.png"));				//Load menu
+	if (img_menu == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
 	img_background = SDL_CreateTextureFromSurface(Renderer, IMG_Load("background.png"));
 	if (img_background == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
@@ -71,6 +78,7 @@ bool Game::LoadImages()
 void Game::Release()
 {
 	//Release images
+	SDL_DestroyTexture(img_menu);
 	SDL_DestroyTexture(img_background);
 	SDL_DestroyTexture(img_player);
 	SDL_DestroyTexture(img_shot);
@@ -108,6 +116,10 @@ bool Game::Update()
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
+	if (keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+	{
+		enter = true;
+	}
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
 	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT) 
 	{
@@ -150,8 +162,13 @@ bool Game::Update()
 
 	//Logic
 	//Scene scroll
-	Scene.Move(-1, 0);
-	if (Scene.GetX() <= -Scene.GetWidth())	Scene.SetX(0);
+	if (enter == true)
+	{
+		Scene.Move(-1, 0);
+		if (Scene.GetX() <= -Scene.GetWidth())	Scene.SetX(0);
+	}
+
+	
 	//Player update
 	Player.Move(fx, fy);
 	//Shots update
@@ -170,38 +187,60 @@ void Game::Draw()
 {
 	SDL_Rect rc;
 
-	//Set the color used for drawing operations
-	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
-	//Clear rendering target
-	SDL_RenderClear(Renderer);
-
-	//God mode uses red wireframe rectangles for physical objects
-	if (god_mode) SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
-
-	//Draw scene
-	Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
-	rc.x += rc.w;
-	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
-	
-	//Draw player
-	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
-	if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
-	
-	//Draw shots
-	for (int i = 0; i < MAX_SHOTS; ++i)
+	if (enter != true)
 	{
-		if (Shots[i].IsAlive())
-		{
-			Shots[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-			SDL_RenderCopy(Renderer, img_shot, NULL, &rc);
-			if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
-		}
+		
+		//Set the color used for drawing operations
+		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);						//Color blanco = (255, 255, 255, 255)
+		//Clear rendering target
+		SDL_RenderClear(Renderer);
+
+		//Draw menu																	//Nuevo "Draw menu"
+		Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_menu, NULL, &rc);
+
+		SDL_RenderPresent(Renderer);
+
+		//SDL_Delay(10);	// 1000/10 = 100 fps max
 	}
+	
 
-	//Update screen
-	SDL_RenderPresent(Renderer);
+	if (enter == true)
+	{
 
-	SDL_Delay(10);	// 1000/10 = 100 fps max
+		//God mode uses red wireframe rectangles for physical objects
+		if (god_mode) SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
+
+		
+
+		//Draw scene
+
+		Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+		rc.x += rc.w;
+		SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+
+
+
+		//Draw player
+		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_player, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+
+		//Draw shots
+		for (int i = 0; i < MAX_SHOTS; ++i)
+		{
+			if (Shots[i].IsAlive())
+			{
+				Shots[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+				SDL_RenderCopy(Renderer, img_shot, NULL, &rc);
+				if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+			}
+		}
+
+		//Update screen
+		SDL_RenderPresent(Renderer);
+
+		SDL_Delay(10);	// 1000/10 = 100 fps max
+	}
 }
