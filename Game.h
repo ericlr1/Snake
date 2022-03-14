@@ -41,7 +41,7 @@ private:
 	Entity Player, Shots[MAX_SHOTS], Scene, Menu;
 	int idx_shot;
 	
-	Entity CikkuderTest;
+	Entity ColliderTest;
 	
 	bool god_mode;
 
