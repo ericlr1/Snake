@@ -39,11 +39,7 @@ bool Game::Init()
 	//size: 104x82
 	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
 	//Definicion de tamaño
-	Player.SetColliderSize(104, 82);
-
-	ColliderTest.Init(300, 300, 104, 82, 5);
-	ColliderTest.SetColliderSize(104, 82);
-	
+		
 	idx_shot = 0;
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
