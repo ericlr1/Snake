@@ -8,6 +8,9 @@
 
 
 #include "Entity.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define WINDOW_WIDTH	1024
 #define WINDOW_HEIGHT	768
