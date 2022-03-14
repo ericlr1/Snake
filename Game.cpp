@@ -39,6 +39,11 @@ bool Game::Init()
 	//size: 104x82
 	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
 	//Definicion de tamaño
+	
+	Player.SetColliderSize(104, 82);
+
+	ColliderTest.Init(300, 300, 104, 82, 5);
+	ColliderTest.SetColliderSize(104, 82);
 		
 	idx_shot = 0;
 	int w;
@@ -148,6 +153,13 @@ bool Game::Update()
 		fx = 1;
 	}
 
+	if (Player.IsColliding(ColliderTest) == true)
+		{
+			if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player.IsColliding(ColliderTest) = false)
+			{
+				
+			}
+		}
 	//if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	//{
 	//	int x, y, w, h;
@@ -182,7 +194,7 @@ bool Game::Update()
 			if (Shots[i].GetX() > WINDOW_WIDTH)	Shots[i].ShutDown();
 		}
 	}
-		
+		CheckCollider();
 	return false;
 }
 void Game::Draw()
@@ -239,10 +251,38 @@ void Game::Draw()
 		//		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 		//	}
 		//}
-
+		DrawCollider();
 		//Update screen
 		SDL_RenderPresent(Renderer);
 
 		SDL_Delay(10);	// 1000/10 = 100 fps max
 	}
+}void Game::DrawCollider()
+{
+	Uint8 r, g, b, a;
+	SDL_GetRenderDrawColor(Renderer, &r, &g, &b, &a);
+	SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
+
+	if (Player.is_coliding)
+	{
+		SDL_SetRenderDrawColor(Renderer, 3, 25, 255, 255);
+	}
+	else
+	{
+		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
+	}
+
+	SDL_Rect rect = Player.GetColliderRect();
+	SDL_RenderDrawRect(Renderer, &rect);
+	
+	SDL_Rect collider_rect = ColliderTest.GetColliderRect();
+	SDL_RenderDrawRect(Renderer, &collider_rect);
+
+
+	SDL_SetRenderDrawColor(Renderer, r, g, b, a);
+}
+
+void Game::CheckCollider()
+{
+	Player.is_coliding = Player.IsColliding(ColliderTest);
 }
