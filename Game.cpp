@@ -147,7 +147,7 @@ bool Game::Update()
 				
 			}
 		}
-	if (RandObj == 0)
+	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	{
 		int x, y, w, h;
 		x = 60;
