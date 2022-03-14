@@ -14,7 +14,7 @@ bool Game::Init()
 		return false;
 	}
 	//Create our window: title, x, y, w, h, flags
-	Window = SDL_CreateWindow("Spaceship: arrow keys + space, f1: god mode", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	Window = SDL_CreateWindow("NOMBRE DE LA APP", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (Window == NULL)
 	{
 		SDL_Log("Unable to create window: %s", SDL_GetError());
@@ -68,11 +68,11 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	img_shot = SDL_CreateTextureFromSurface(Renderer, IMG_Load("shot.png"));
-	if (img_shot == NULL) {
-		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-		return false;
-	}
+	//img_shot = SDL_CreateTextureFromSurface(Renderer, IMG_Load("shot.png"));
+	//if (img_shot == NULL) {
+	//	SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+	//	return false;
+	//}
 	return true;
 }
 void Game::Release()
@@ -121,18 +121,18 @@ bool Game::Update()
 		enter = true;
 	}
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT) 
-	{
-		SDL_DestroyTexture(img_player);
-		img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-up.png"));
-		fy = -1;
-	}	
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)
-	{
-		SDL_DestroyTexture(img_player);
-		img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-d.png"));
-		fy = 1;
-	}
+	//if (keys[SDL_SCANCODE_UP] == KEY_REPEAT) 
+	//{
+	//	SDL_DestroyTexture(img_player);
+	//	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-up.png"));
+	//	fy = -1;
+	//}	
+	//if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)
+	//{
+	//	SDL_DestroyTexture(img_player);
+	//	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-d.png"));
+	//	fy = 1;
+	//}
 	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT)
 	{
 		SDL_DestroyTexture(img_player);
