@@ -255,11 +255,11 @@ void Game::Draw()
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 	}
 
-	SDL_Rect rect = Player.GetColliderRect();
+	/*SDL_Rect rect = Player.GetColliderRect();
 	SDL_RenderDrawRect(Renderer, &rect);
 	
 	SDL_Rect collider_rect = Meteor.GetColliderRect();
-	SDL_RenderDrawRect(Renderer, &collider_rect);
+	SDL_RenderDrawRect(Renderer, &collider_rect);*/
 
 
 	SDL_SetRenderDrawColor(Renderer, r, g, b, a);
@@ -296,14 +296,14 @@ void Game::UpdateGame()
 	}
 	Player.Move(fx, fy);
 
-	if (current_time > start_meteor_time + 2000)
+	if (current_time > start_meteor_time + 0050)
 	{
 		if( restart_meteor == true)
 		{
 			restart_meteor = false;
 			
 		}
-		Meteor.Move(0, 1);
+		Meteor.Move(0, 4);
 	}
 	if (Meteor.GetY() >=850)
 	{
