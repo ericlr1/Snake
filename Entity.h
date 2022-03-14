@@ -21,8 +21,8 @@ public:
 	void SetPos(int posx, int posy);
 
 //Inicio de funcion
-	void SetColliderSize(int x, int y);
-
+	void SetColliderSize(int w, int h);
+	void SetColliderPos(int posx, int posy);
 	SDL_Rect GetColliderRect();
 
 	bool IsColliding(Entity collider);

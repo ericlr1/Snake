@@ -42,14 +42,15 @@ bool Game::Init()
 
 	//Init variables
 	//size: 104x82
-	Player.Init(500, 1200>> 1, 104, 82, 5);
-	//Definicion de tamaño
+	Player.Init(500, 1200>> 1, 150, 150, 7);
+	Player.SetColliderSize(150, 100);
 	
-	Player.SetColliderSize(104, 82);
-	
-	Meteor.Init(400, -100, 100, 100,2);
-	
-	Meteor.SetColliderSize(100, 100);
+	Meteor.Init(700, -100, 125, 130,2);
+	Meteor.SetColliderSize(115, 100);
+
+	Candy.Init(32, 512, 80, 70, 3);
+	Candy.SetColliderSize(80, 70);
+
 
 	srand(time(NULL));
 
@@ -88,6 +89,11 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
+	img_can = SDL_CreateTextureFromSurface(Renderer, IMG_Load("Candy.png"));
+	if (img_can == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
 	return true;
 }
 void Game::Release()
@@ -97,6 +103,7 @@ void Game::Release()
 	SDL_DestroyTexture(img_background);
 	SDL_DestroyTexture(img_player);
 	SDL_DestroyTexture(img_obj);
+	SDL_DestroyTexture(img_can);
 	IMG_Quit();
 	
 	//Clean up all SDL initialized subsystems
@@ -155,14 +162,6 @@ bool Game::Update()
 		h = 70;
 	}
 
-	//Logic
-	//Scene scroll
-	/*if (enter == true)
-	{
-		Scene.Move(-1, 0);
-		if (Scene.GetX() <= -Scene.GetWidth())	Scene.SetX(0);
-	}*/
-
 	if (firstime_showing_game && enter == true)
 	{
 		firstime_showing_game = false;
@@ -174,11 +173,6 @@ bool Game::Update()
 		UpdateGame();
 
 	}
-	
-
-	
-	
-	
 	
 		
 	return false;
@@ -208,29 +202,27 @@ void Game::Draw()
 
 	if (enter == true)
 	{
-
 		//God mode uses red wireframe rectangles for physical objects
 		if (god_mode) SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
 
-		
-
 		//Draw scene
-
 		Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 		SDL_RenderCopy(Renderer, img_background, NULL, &rc);
 		rc.x += rc.w;
 		SDL_RenderCopy(Renderer, img_background, NULL, &rc);
-
-
 
 		//Draw player
 		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 		SDL_RenderCopy(Renderer, img_player, NULL, &rc);
 		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 
-		//Draw player
+		//Draw Meteo
 		Meteor.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 		SDL_RenderCopy(Renderer, img_obj, NULL, &rc);
+		
+		//Draw Candy
+		Candy.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_can, NULL, &rc);
 		
 		//Draw shots
 		
@@ -255,11 +247,14 @@ void Game::Draw()
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 	}
 
-	/*SDL_Rect rect = Player.GetColliderRect();
+	SDL_Rect rect = Player.GetColliderRect();
 	SDL_RenderDrawRect(Renderer, &rect);
 	
 	SDL_Rect collider_rect = Meteor.GetColliderRect();
-	SDL_RenderDrawRect(Renderer, &collider_rect);*/
+	SDL_RenderDrawRect(Renderer, &collider_rect);
+	
+	//SDL_Rect collider_rect = Candy.GetColliderRect();
+	//SDL_RenderDrawRect(Renderer, &collider_rect);
 
 
 	SDL_SetRenderDrawColor(Renderer, r, g, b, a);
@@ -267,15 +262,21 @@ void Game::Draw()
 
 void Game::CheckCollider()
 {
-	bool is_coliding = Player.IsColliding(Meteor);
+	bool is_coliding1 = Player.IsColliding(Candy);
+
+	if (is_coliding1)
+	{
+		int r = rand() % WINDOW_WIDTH;
+		start_meteor_time = current_time;
+		Candy.SetPos(r, -100);
+		restart_meteor = true;
+	}
 	
+	bool is_coliding = Player.IsColliding(Meteor);
+
 	if (is_coliding)
 	{
-		
 		Player.ShutDown();
-		
-		
-	
 	}
 }
 
@@ -296,6 +297,7 @@ void Game::UpdateGame()
 	}
 	Player.Move(fx, fy);
 
+	//Mateorito
 	if (current_time > start_meteor_time + 0050)
 	{
 		if( restart_meteor == true)
@@ -313,10 +315,22 @@ void Game::UpdateGame()
 		restart_meteor = true;
 	}
 	
-
-	if (Player.IsAlive() == false)
+	//Candy
+	if (current_time > start_meteor_time + 1)
 	{
-		finish = true;
+		if (restart_meteor == true)
+		{
+			restart_meteor = false;
+
+		}
+		Candy.Move(0, 2);
+	}
+	if (Candy.GetY() >= 850)
+	{
+		int r = rand() % WINDOW_WIDTH;
+		start_meteor_time = current_time;
+		Candy.SetPos(r, -100);
+		restart_meteor = true;
 	}
 
 	CheckCollider();

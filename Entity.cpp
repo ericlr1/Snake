@@ -59,10 +59,10 @@ void Entity::SetPos(int posx, int posy)
 	x = posx;
 	y = posy;
 }
-void Entity::SetColliderSize(int x, int y)
+void Entity::SetColliderSize(int w, int h)
 {
-	collider.height = y;
-	collider.width = x;
+	collider.height = h;
+	collider.width = w;	
 }
 
 SDL_Rect Entity::GetColliderRect()
