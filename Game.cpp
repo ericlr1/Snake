@@ -37,7 +37,7 @@ bool Game::Init()
 
 	//Init variables
 	//size: 104x82
-	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
+	Player.Init(500, 1200>> 1, 104, 82, 5);
 	//Definicion de tamaño
 	
 	Player.SetColliderSize(104, 82);

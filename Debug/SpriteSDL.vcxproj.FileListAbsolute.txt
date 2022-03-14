@@ -1,3 +1,4 @@
 C:\Users\ericl\Desktop\Snake\SpriteSDL-master\Debug\SpriteSDL.exe
 C:\Users\ericl\Documents\GitHub\Snake\Debug\SpriteSDL.exe
 C:\Users\Guillem\Documents\GitHub\Snake\Debug\SpriteSDL.exe
+D:\Documentos\Snake\Debug\SpriteSDL.exe
