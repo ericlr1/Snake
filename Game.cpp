@@ -150,9 +150,12 @@ bool Game::Update()
 	if (RandObj == 0)
 	{
 		int x, y, w, h;
-		//size: 56x20
-		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Object[idx_obj].Init(60, 60, 100, 100, 10);
+		x = 60;
+		y = 60;
+		w = 70;
+		h = 70;
+		Object[idx_obj].Init(x, y, w, h, 10);
+		idx_obj++;
 		idx_obj %= MAX_SHOTS;
 	}
 

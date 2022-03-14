@@ -1,6 +1,4 @@
 ﻿  Game.cpp
-C:\Users\ericl\Documents\GitHub\Snake\Game.cpp(152,10): warning C4101: 'y': variable local sin referencia
-C:\Users\ericl\Documents\GitHub\Snake\Game.cpp(152,7): warning C4101: 'x': variable local sin referencia
-C:\Users\ericl\Documents\GitHub\Snake\Game.cpp(152,16): warning C4101: 'h': variable local sin referencia
-C:\Users\ericl\Documents\GitHub\Snake\Game.cpp(152,13): warning C4101: 'w': variable local sin referencia
-  SpriteSDL.vcxproj -> C:\Users\ericl\Documents\GitHub\Snake\Debug\SpriteSDL.exe
+  main.cpp
+  Generando código...
+  SpriteSDL.vcxproj -> C:\Users\Guillem\Documents\GitHub\Snake\Debug\SpriteSDL.exe
