@@ -41,9 +41,6 @@ bool Game::Init()
 	//Definicion de tamaño
 	
 	Player.SetColliderSize(104, 82);
-
-	ColliderTest.Init(300, 300, 104, 82, 5);
-	ColliderTest.SetColliderSize(104, 82);
 		
 	idx_shot = 0;
 	int w;
@@ -176,11 +173,11 @@ bool Game::Update()
 
 	//Logic
 	//Scene scroll
-	if (enter == true)
+	/*if (enter == true)
 	{
 		Scene.Move(-1, 0);
 		if (Scene.GetX() <= -Scene.GetWidth())	Scene.SetX(0);
-	}
+	}*/
 
 	
 	//Player update
@@ -196,6 +193,7 @@ bool Game::Update()
 	}
 		CheckCollider();
 	return false;
+	
 }
 void Game::Draw()
 {
