@@ -42,7 +42,7 @@ bool Game::Init()
 	
 	Player.SetColliderSize(104, 82);
 		
-	idx_shot = 0;
+	idx_obj = 0;
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
 	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4);
@@ -72,11 +72,11 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	//img_shot = SDL_CreateTextureFromSurface(Renderer, IMG_Load("shot.png"));
-	//if (img_shot == NULL) {
-	//	SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-	//	return false;
-	//}
+	img_obj = SDL_CreateTextureFromSurface(Renderer, IMG_Load("asteroide.png"));
+	if (img_obj == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
 	return true;
 }
 void Game::Release()
@@ -85,7 +85,7 @@ void Game::Release()
 	SDL_DestroyTexture(img_menu);
 	SDL_DestroyTexture(img_background);
 	SDL_DestroyTexture(img_player);
-	SDL_DestroyTexture(img_shot);
+	SDL_DestroyTexture(img_obj);
 	IMG_Quit();
 	
 	//Clean up all SDL initialized subsystems
@@ -125,18 +125,7 @@ bool Game::Update()
 		enter = true;
 	}
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
-	//if (keys[SDL_SCANCODE_UP] == KEY_REPEAT) 
-	//{
-	//	SDL_DestroyTexture(img_player);
-	//	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-up.png"));
-	//	fy = -1;
-	//}	
-	//if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)
-	//{
-	//	SDL_DestroyTexture(img_player);
-	//	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-d.png"));
-	//	fy = 1;
-	//}
+
 	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT && Player.GetX() > 0)
 	{
 		SDL_DestroyTexture(img_player);
@@ -157,19 +146,16 @@ bool Game::Update()
 				
 			}
 		}
-	//if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
-	//{
-	//	int x, y, w, h;
-	//	Player.GetRect(&x, &y, &w, &h);
-	//	//size: 56x20
-	//	//offset from player: dx, dy = [(29, 3), (29, 59)]
-	//	Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10);
-	//	idx_shot++;
-	//	idx_shot %= MAX_SHOTS;
-	//	Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10);
-	//	idx_shot++;
-	//	idx_shot %= MAX_SHOTS;
-	//}
+	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
+	{
+		int x, y, w, h;
+		Player.GetRect(&x, &y, &w, &h);
+		//size: 56x20
+		//offset from player: dx, dy = [(29, 3), (29, 59)]
+		Object[idx_obj].Init(60, 60, 20, 20, 10);
+		idx_obj++;
+		idx_obj %= MAX_SHOTS;
+	}
 
 	//Logic
 	//Scene scroll
@@ -185,10 +171,10 @@ bool Game::Update()
 	//Shots update
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
-		if (Shots[i].IsAlive())
+		if (Object[i].IsAlive())
 		{
-			Shots[i].Move(1, 0);
-			if (Shots[i].GetX() > WINDOW_WIDTH)	Shots[i].ShutDown();
+			Object[i].Move(1, 0);
+			if (Object[i].GetX() > WINDOW_WIDTH)	Object[i].ShutDown();
 		}
 	}
 		CheckCollider();
@@ -240,15 +226,15 @@ void Game::Draw()
 		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 
 		//Draw shots
-		//for (int i = 0; i < MAX_SHOTS; ++i)
-		//{
-		//	if (Shots[i].IsAlive())
-		//	{
-		//		Shots[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-		//		SDL_RenderCopy(Renderer, img_shot, NULL, &rc);
-		//		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
-		//	}
-		//}
+		for (int i = 0; i < MAX_SHOTS; ++i)
+		{
+			if (Object[i].IsAlive())
+			{
+				Object[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+				SDL_RenderCopy(Renderer, img_obj, NULL, &rc);
+				if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+			}
+		}
 		DrawCollider();
 		//Update screen
 		SDL_RenderPresent(Renderer);

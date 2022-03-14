@@ -38,11 +38,10 @@ private:
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
-	SDL_Texture *img_background, *img_player, *img_shot, *img_menu;  //Incluido el *img_menu
-	SDL_Rect* food1, food2, food3;
+	SDL_Texture *img_background, *img_player, *img_obj, *img_menu;  //Incluido el *img_menu
 
-	Entity Player, Shots[MAX_SHOTS], Scene, Menu;
-	int idx_shot;
+	Entity Player, Object[MAX_SHOTS], Scene, Menu;
+	int idx_obj;
 	
 	Entity ColliderTest;
 	
