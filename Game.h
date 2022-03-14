@@ -29,6 +29,10 @@ public:
 	void Draw();
 
 private:
+	void DrawCollider();
+	void CheckCollider();
+
+private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
 	SDL_Texture *img_background, *img_player, *img_shot, *img_menu;  //Incluido el *img_menu
@@ -36,7 +40,9 @@ private:
 
 	Entity Player, Shots[MAX_SHOTS], Scene, Menu;
 	int idx_shot;
-
+	
+	Entity CikkuderTest;
+	
 	bool god_mode;
 
 	enum KEY_STATE { KEY_IDLE, KEY_DOWN, KEY_REPEAT, KEY_UP	};
