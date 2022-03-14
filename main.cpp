@@ -12,6 +12,10 @@ int main(int argc, char* args[])
 	{
 		end = game.Update();
 		game.Draw();
+		if (game.finish == true)
+		{
+			break;
+		}
 	}
 
 	game.Release();

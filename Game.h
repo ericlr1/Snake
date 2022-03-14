@@ -15,7 +15,7 @@
 #define WINDOW_WIDTH	1024
 #define WINDOW_HEIGHT	768
 #define MAX_KEYS		256
-#define MAX_SHOTS		300
+#define MAX_METEORS		300
 
 class Game
 {
@@ -31,16 +31,24 @@ public:
 	bool Update();
 	void Draw();
 
+	
+
 private:
 	void DrawCollider();
 	void CheckCollider();
+	void UpdateGame();
+	void StartGame();
+
+	
+public:
+	bool finish = false;
 
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
 	SDL_Texture *img_background, *img_player, *img_obj, *img_menu;  //Incluido el *img_menu
 
-	Entity Player, Object[MAX_SHOTS], Scene, Menu;
+	Entity Player, Meteor, Scene, Menu;
 	int idx_obj;
 	
 	Entity ColliderTest;
@@ -49,4 +57,14 @@ private:
 
 	enum KEY_STATE { KEY_IDLE, KEY_DOWN, KEY_REPEAT, KEY_UP	};
 	KEY_STATE keys[MAX_KEYS]; 
+
+	int current_time = 0;
+	int start_meteor_time = 0;
+	
+	bool firstime_showing_game = true;
+
+	bool restart_meteor = true;
+	
+	
+	
 };

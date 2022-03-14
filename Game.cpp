@@ -1,5 +1,7 @@
 #include "Game.h"
 #include <math.h>
+#include <time.h>
+#include <stdlib.h>
 
 bool enter = false;
 int RandObj = 0;
@@ -28,6 +30,7 @@ bool Game::Init()
 		SDL_Log("Unable to create rendering context: %s", SDL_GetError());
 		return false;
 	}
+	SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
 	//Initialize keys array
 	for (int i = 0; i < MAX_KEYS; ++i)
 		keys[i] = KEY_IDLE;
@@ -42,7 +45,13 @@ bool Game::Init()
 	//Definicion de tamaño
 	
 	Player.SetColliderSize(104, 82);
-		
+	
+	Meteor.Init(400, -100, 100, 100,2);
+	
+	Meteor.SetColliderSize(100, 100);
+
+	srand(time(NULL));
+
 	idx_obj = 0;
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
@@ -115,30 +124,19 @@ bool Game::Input()
 bool Game::Update()
 {
 	
+	current_time = SDL_GetTicks();
+
 	//Read Input
 	if (!Input())	return true;
 
 	//Process Input
-	int fx = 0, fy = 0;
+	
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
 	if (keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
 		enter = true;
 	}
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
-
-	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT && Player.GetX() > 0)
-	{
-		//SDL_DestroyTexture(img_player);
-		//img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-l.png"));
-		fx = -1;
-	}
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player.GetX() < 1020 - Player.GetWidth())
-	{
-		//SDL_DestroyTexture(img_player);
-		//img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-r.png"));
-		fx = 1;
-	}
 
 	if (Player.IsColliding(ColliderTest) == true)
 		{
@@ -154,9 +152,6 @@ bool Game::Update()
 		y = 60;
 		w = 70;
 		h = 70;
-		Object[idx_obj].Init(x, y, w, h, 10);
-		idx_obj++;
-		idx_obj %= MAX_SHOTS;
 	}
 
 	//Logic
@@ -167,19 +162,24 @@ bool Game::Update()
 		if (Scene.GetX() <= -Scene.GetWidth())	Scene.SetX(0);
 	}*/
 
-	
-	//Player update
-	Player.Move(fx, fy);
-	//Shots update
-	for (int i = 0; i < MAX_SHOTS; ++i)
+	if (firstime_showing_game && enter == true)
 	{
-		if (Object[i].IsAlive())
-		{
-			Object[i].Move(0, 1);
-			if (Object[i].GetX() > WINDOW_WIDTH)	Object[i].ShutDown();
-		}
+		firstime_showing_game = false;
+		StartGame();
 	}
-		CheckCollider();
+	//Player update
+	if (firstime_showing_game == false)
+	{
+		UpdateGame();
+
+	}
+	
+
+	
+	
+	
+	
+		
 	return false;
 	
 }
@@ -227,16 +227,12 @@ void Game::Draw()
 		SDL_RenderCopy(Renderer, img_player, NULL, &rc);
 		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 
+		//Draw player
+		Meteor.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_obj, NULL, &rc);
+		
 		//Draw shots
-		for (int i = 0; i < MAX_SHOTS; ++i)
-		{
-			if (Object[i].IsAlive())
-			{
-				Object[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-				SDL_RenderCopy(Renderer, img_obj, NULL, &rc);
-				if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
-			}
-		}
+		
 		DrawCollider();
 		//Update screen
 		SDL_RenderPresent(Renderer);
@@ -261,7 +257,7 @@ void Game::Draw()
 	SDL_Rect rect = Player.GetColliderRect();
 	SDL_RenderDrawRect(Renderer, &rect);
 	
-	SDL_Rect collider_rect = ColliderTest.GetColliderRect();
+	SDL_Rect collider_rect = Meteor.GetColliderRect();
 	SDL_RenderDrawRect(Renderer, &collider_rect);
 
 
@@ -270,5 +266,59 @@ void Game::Draw()
 
 void Game::CheckCollider()
 {
-	Player.is_coliding = Player.IsColliding(ColliderTest);
+	bool is_coliding = Player.IsColliding(Meteor);
+	
+	if (is_coliding)
+	{
+		Player.ShutDown();
+	}
 }
+
+void Game::UpdateGame()
+{
+	int fx = 0, fy = 0;
+	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT && Player.GetX() > 0)
+	{
+		//SDL_DestroyTexture(img_player);
+		//img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-l.png"));
+		fx = -1;
+	}
+	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player.GetX() < 1020 - Player.GetWidth())
+	{
+		//SDL_DestroyTexture(img_player);
+		//img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-r.png"));
+		fx = 1;
+	}
+	Player.Move(fx, fy);
+
+	if (current_time > start_meteor_time + 2000)
+	{
+		if( restart_meteor == true)
+		{
+			restart_meteor = false;
+			
+		}
+		Meteor.Move(0, 1);
+	}
+	if (Meteor.GetY() >=850)
+	{
+		int r = rand() % WINDOW_WIDTH;
+		start_meteor_time = current_time;
+		Meteor.SetPos(r, -100);
+		restart_meteor = true;
+	}
+	
+
+	if (Player.IsAlive() == false)
+	{
+		finish = true;
+	}
+
+	CheckCollider();
+}
+void Game::StartGame()
+{
+	start_meteor_time = current_time;
+
+}
+

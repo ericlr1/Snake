@@ -36,6 +36,10 @@ void Entity::SetX(int posx)
 {
 	x = posx;
 }
+int Entity::GetY()
+{
+	return y;
+}
 void Entity::ShutDown()
 {
 	is_alive = false;
@@ -49,6 +53,11 @@ void Entity::Move(int dx, int dy)
 {
 	x += dx * speed;
 	y += dy * speed;
+}
+void Entity::SetPos(int posx, int posy)
+{
+	x = posx;
+	y = posy;
 }
 void Entity::SetColliderSize(int x, int y)
 {
