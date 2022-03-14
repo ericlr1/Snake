@@ -155,7 +155,7 @@ bool Game::Update()
 
 	if (Player.IsColliding(ColliderTest) == true)
 		{
-			if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player.IsColliding(ColliderTest) = false)
+			if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player.IsColliding(ColliderTest) == false)
 			{
 				
 			}

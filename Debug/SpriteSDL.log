@@ -1,6 +1,4 @@
-﻿  Entity.cpp
-  Game.cpp
-C:\Users\Guillem\Documents\GitHub\Snake\Game.cpp(44,2): error C2065: 'ColliderTest': identificador no declarado
-C:\Users\Guillem\Documents\GitHub\Snake\Game.cpp(45,2): error C2065: 'ColliderTest': identificador no declarado
+﻿  Game.cpp
   main.cpp
   Generando código...
+  SpriteSDL.vcxproj -> C:\Users\ericl\Documents\GitHub\Snake\Debug\SpriteSDL.exe
