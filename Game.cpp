@@ -129,14 +129,14 @@ bool Game::Update()
 
 	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT && Player.GetX() > 0)
 	{
-		SDL_DestroyTexture(img_player);
-		img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-l.png"));
+		//SDL_DestroyTexture(img_player);
+		//img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-l.png"));
 		fx = -1;
 	}
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player.GetX() < 1020 - Player.GetWidth())
 	{
-		SDL_DestroyTexture(img_player);
-		img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-r.png"));
+		//SDL_DestroyTexture(img_player);
+		//img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship-r.png"));
 		fx = 1;
 	}
 
