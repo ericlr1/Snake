@@ -190,7 +190,7 @@ void Game::Draw()
 	if (enter != true)
 	{
 		
-		//			Set the color used for drawing operations
+		//Set the color used for drawing operations
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);						//Color blanco = (255, 255, 255, 255)
 		//Clear rendering target
 		SDL_RenderClear(Renderer);
