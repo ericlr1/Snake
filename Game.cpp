@@ -2,6 +2,7 @@
 #include <math.h>
 
 bool enter = false;
+int RandObj = 0;
 
 Game::Game() {}
 Game::~Game(){}
@@ -146,14 +147,12 @@ bool Game::Update()
 				
 			}
 		}
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
+	if (RandObj == 0)
 	{
 		int x, y, w, h;
-		Player.GetRect(&x, &y, &w, &h);
 		//size: 56x20
 		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Object[idx_obj].Init(60, 60, 20, 20, 10);
-		idx_obj++;
+		Object[idx_obj].Init(60, 60, 100, 100, 10);
 		idx_obj %= MAX_SHOTS;
 	}
 
@@ -173,7 +172,7 @@ bool Game::Update()
 	{
 		if (Object[i].IsAlive())
 		{
-			Object[i].Move(1, 0);
+			Object[i].Move(0, 1);
 			if (Object[i].GetX() > WINDOW_WIDTH)	Object[i].ShutDown();
 		}
 	}
