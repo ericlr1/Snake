@@ -32,6 +32,7 @@ private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
 	SDL_Texture *img_background, *img_player, *img_shot, *img_menu;  //Incluido el *img_menu
+	SDL_Rect* food1, food2, food3;
 
 	Entity Player, Shots[MAX_SHOTS], Scene, Menu;
 	int idx_shot;
