@@ -33,6 +33,6 @@ private:
 	int width, height;
 	int speed;
 	bool is_alive;
-	Collider collider
+	Collider collider;
 };
 
