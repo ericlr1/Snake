@@ -5,6 +5,7 @@
 
 bool enter = false;
 int RandObj = 0;
+int vida = 3;
 
 Game::Game() {}
 Game::~Game(){}
@@ -270,7 +271,11 @@ void Game::CheckCollider()
 	
 	if (is_coliding)
 	{
+		
 		Player.ShutDown();
+		
+		
+	
 	}
 }
 
