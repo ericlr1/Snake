@@ -146,19 +146,19 @@ bool Game::Update()
 		fx = 1;
 	}
 
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
-	{
-		int x, y, w, h;
-		Player.GetRect(&x, &y, &w, &h);
-		//size: 56x20
-		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10);
-		idx_shot++;
-		idx_shot %= MAX_SHOTS;
-		Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10);
-		idx_shot++;
-		idx_shot %= MAX_SHOTS;
-	}
+	//if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
+	//{
+	//	int x, y, w, h;
+	//	Player.GetRect(&x, &y, &w, &h);
+	//	//size: 56x20
+	//	//offset from player: dx, dy = [(29, 3), (29, 59)]
+	//	Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10);
+	//	idx_shot++;
+	//	idx_shot %= MAX_SHOTS;
+	//	Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10);
+	//	idx_shot++;
+	//	idx_shot %= MAX_SHOTS;
+	//}
 
 	//Logic
 	//Scene scroll
@@ -228,15 +228,15 @@ void Game::Draw()
 		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 
 		//Draw shots
-		for (int i = 0; i < MAX_SHOTS; ++i)
-		{
-			if (Shots[i].IsAlive())
-			{
-				Shots[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-				SDL_RenderCopy(Renderer, img_shot, NULL, &rc);
-				if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
-			}
-		}
+		//for (int i = 0; i < MAX_SHOTS; ++i)
+		//{
+		//	if (Shots[i].IsAlive())
+		//	{
+		//		Shots[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		//		SDL_RenderCopy(Renderer, img_shot, NULL, &rc);
+		//		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+		//	}
+		//}
 
 		//Update screen
 		SDL_RenderPresent(Renderer);
