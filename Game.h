@@ -2,10 +2,11 @@
 
 #include "SDL/include/SDL.h"
 #include "SDL_image/include/SDL_image.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
-
+#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 #include "Entity.h"
 #include <stdio.h>
@@ -16,6 +17,8 @@
 #define WINDOW_HEIGHT	768
 #define MAX_KEYS		256
 #define MAX_METEORS		300
+#define MAX_SHOTS		32
+#define MAX_TRACKS		8
 
 class Game
 {
@@ -25,6 +28,7 @@ public:
 
 	bool Init();
 	bool LoadImages();
+	bool LoadAudios();
 	void Release();
 	
 	bool Input();
@@ -64,7 +68,11 @@ private:
 	bool firstime_showing_game = true;
 
 	bool restart_meteor = true;
-	
+	Mix_Music* tracks[MAX_TRACKS];
+	int num_tracks;
+
+	Mix_Chunk* sfxs[MAX_SHOTS];
+	int num_sfxs;
 	
 	
 };

@@ -39,6 +39,20 @@ bool Game::Init()
 	//Load images
 	if (!LoadImages())
 		return false;
+	int flags = MIX_INIT_OGG;
+	if (Mix_Init(flags) != flags) {
+		SDL_Log("Failed to init OGG module for SDL_Mixer!\n");
+		SDL_Log("Mix_Init: %s\n", Mix_GetError());
+		return false;
+	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+		SDL_Log("Failed to init SDL_Mixer!\n");
+		SDL_Log("Mix_OpenAudio: %s\n", Mix_GetError());
+		return false;
+	}
+
+	if (!LoadAudios())
+		return false;
 
 	//Init variables
 	//size: 104x82
@@ -60,6 +74,16 @@ bool Game::Init()
 	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4);
 	god_mode = false;
 
+	return true;
+}
+bool Game::LoadAudios() {
+	num_tracks = 0;
+	tracks[num_tracks++] = Mix_LoadMUS("Roboxel - Space Music (Remix).ogg");
+
+	Mix_PlayMusic(tracks[0], -1);
+
+	sfxs[num_sfxs++] = Mix_LoadWAV("sample_wav.wav");
+	
 	return true;
 }
 bool Game::LoadImages()
@@ -112,6 +136,16 @@ void Game::Release()
 	SDL_DestroyTexture(img_over);
 	IMG_Quit();
 	
+	for (int i = 0; i < num_tracks; ++i)
+		Mix_FreeMusic(tracks[i]);
+	for (int i = 0; i < num_sfxs; ++i)
+		Mix_FreeChunk(sfxs[i]);
+
+	
+	Mix_CloseAudio();
+	while (Mix_Init(0))
+		Mix_Quit();
+
 	//Clean up all SDL initialized subsystems
 	SDL_Quit();
 }
@@ -148,6 +182,7 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
 	if (keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
+		Mix_PauseMusic();
 		enter = true;
 	}
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
