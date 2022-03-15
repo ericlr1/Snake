@@ -46,7 +46,7 @@ public:
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
-	SDL_Texture *img_background, *img_player, *img_obj, *img_can, *img_menu;  //Incluido el *img_menu
+	SDL_Texture *img_background, *img_player, *img_obj, *img_can, *img_menu, *img_over;  //Incluido el *img_menu
 
 	Entity Player, Meteor, Candy, Scene, Menu;
 	int idx_obj;

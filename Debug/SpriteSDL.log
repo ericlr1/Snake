@@ -1,3 +1,5 @@
 ﻿  Game.cpp
-D:\Documentos\Snake\Game.cpp(55,12): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
-  SpriteSDL.vcxproj -> D:\Documentos\Snake\Debug\SpriteSDL.exe
+C:\Users\ericl\Documents\GitHub\Snake\Game.cpp(55,12): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+  main.cpp
+  Generando código...
+  SpriteSDL.vcxproj -> C:\Users\ericl\Documents\GitHub\Snake\Debug\SpriteSDL.exe

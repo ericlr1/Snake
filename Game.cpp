@@ -94,6 +94,11 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
+	img_over = SDL_CreateTextureFromSurface(Renderer, IMG_Load("over.png"));
+	if (img_over == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
 	return true;
 }
 void Game::Release()
@@ -104,6 +109,7 @@ void Game::Release()
 	SDL_DestroyTexture(img_player);
 	SDL_DestroyTexture(img_obj);
 	SDL_DestroyTexture(img_can);
+	SDL_DestroyTexture(img_over);
 	IMG_Quit();
 	
 	//Clean up all SDL initialized subsystems
@@ -262,6 +268,8 @@ void Game::Draw()
 
 void Game::CheckCollider()
 {
+	SDL_Rect rc;
+
 	bool is_coliding1 = Player.IsColliding(Candy);
 
 	if (is_coliding1)
@@ -285,6 +293,19 @@ void Game::CheckCollider()
 		
 		if (vida <= 0)
 		{
+			//Set the color used for drawing operations
+			SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);						//Color blanco = (255, 255, 255, 255)
+			//Clear rendering target
+			SDL_RenderClear(Renderer);
+
+			//Draw menu																	//Nuevo "Draw menu"
+			Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+			SDL_RenderCopy(Renderer, img_over, NULL, &rc);
+
+			SDL_RenderPresent(Renderer);
+
+			SDL_Delay(1000);	
+
 			Player.ShutDown();
 		}
 	}
