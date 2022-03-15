@@ -82,8 +82,9 @@ bool Game::LoadAudios() {
 
 	Mix_PlayMusic(tracks[0], -1);
 
-	sfxs[num_sfxs++] = Mix_LoadWAV("sample_wav.wav");
-	
+	sfxs[num_sfxs++] = Mix_LoadWAV("sfx-eating3.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("dark-souls-you-died-sound-effect_hm5sYFG.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("golpe2.wav");
 	return true;
 }
 bool Game::LoadImages()
@@ -313,6 +314,7 @@ void Game::CheckCollider()
 		start_meteor_time = current_time;
 		Candy.SetPos(r, -100);
 		restart_meteor = true;
+		Mix_PlayChannel(-1, sfxs[0], 0);
 	}
 	
 	bool is_coliding = Player.IsColliding(Meteor);
@@ -323,9 +325,11 @@ void Game::CheckCollider()
 		start_meteor_time = current_time;
 		Meteor.SetPos(r, -100);
 		restart_meteor = true;
-		
+		Mix_PlayChannel(-1, sfxs[2], 0);
 		vida-=1;
-		
+		if (vida <= 0) {
+        Mix_PlayChannel(-1, sfxs[1], 0);
+		}
 		if (vida <= 0)
 		{
 			//Set the color used for drawing operations
@@ -339,9 +343,10 @@ void Game::CheckCollider()
 
 			SDL_RenderPresent(Renderer);
 
-			SDL_Delay(1000);	
-
+			SDL_Delay(6000);	
+			
 			Player.ShutDown();
+		
 		}
 	}
 
