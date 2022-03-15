@@ -276,8 +276,19 @@ void Game::CheckCollider()
 
 	if (is_coliding)
 	{
-		Player.ShutDown();
+		int r = rand() % WINDOW_WIDTH;
+		start_meteor_time = current_time;
+		Meteor.SetPos(r, -100);
+		restart_meteor = true;
+		
+		vida-=1;
+		
+		if (vida <= 0)
+		{
+			Player.ShutDown();
+		}
 	}
+
 }
 
 void Game::UpdateGame()
@@ -320,6 +331,7 @@ void Game::UpdateGame()
 	{
 		if (restart_meteor == true)
 		{
+		
 			restart_meteor = false;
 
 		}
@@ -332,7 +344,12 @@ void Game::UpdateGame()
 		Candy.SetPos(r, -100);
 		restart_meteor = true;
 	}
-
+	
+	if (Player.IsAlive() == false)
+	{
+		finish = true;
+	}
+	
 	CheckCollider();
 }
 void Game::StartGame()
@@ -340,4 +357,5 @@ void Game::StartGame()
 	start_meteor_time = current_time;
 
 }
+
 
