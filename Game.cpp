@@ -276,30 +276,30 @@ void Game::Draw()
 	}
 }void Game::DrawCollider()
 {
-	Uint8 r, g, b, a;
-	SDL_GetRenderDrawColor(Renderer, &r, &g, &b, &a);
-	SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
+	//Uint8 r, g, b, a;
+	//SDL_GetRenderDrawColor(Renderer, &r, &g, &b, &a);
+	//SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 
-	if (Player.is_coliding)
-	{
-		SDL_SetRenderDrawColor(Renderer, 3, 25, 255, 255);
-	}
-	else
-	{
-		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
-	}
+	//if (Player.is_coliding)
+	//{
+	//	SDL_SetRenderDrawColor(Renderer, 3, 25, 255, 255);
+	//}
+	//else
+	//{
+	//	SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
+	//}
 
-	SDL_Rect rect = Player.GetColliderRect();
-	SDL_RenderDrawRect(Renderer, &rect);
-	
-	SDL_Rect collider_rect = Meteor.GetColliderRect();
-	SDL_RenderDrawRect(Renderer, &collider_rect);
-	
-	//SDL_Rect collider_rect = Candy.GetColliderRect();
+	//SDL_Rect rect = Player.GetColliderRect();
+	//SDL_RenderDrawRect(Renderer, &rect);
+	//
+	//SDL_Rect collider_rect = Meteor.GetColliderRect();
 	//SDL_RenderDrawRect(Renderer, &collider_rect);
+	//
+	////SDL_Rect collider_rect = Candy.GetColliderRect();
+	////SDL_RenderDrawRect(Renderer, &collider_rect);
 
 
-	SDL_SetRenderDrawColor(Renderer, r, g, b, a);
+	//SDL_SetRenderDrawColor(Renderer, r, g, b, a);
 }
 
 void Game::CheckCollider()
